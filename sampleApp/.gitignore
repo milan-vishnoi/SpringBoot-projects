@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+##DB Credentils ###
+dbCred.env
