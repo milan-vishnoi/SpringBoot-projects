@@ -14,11 +14,11 @@ public class Feedback {
     @Column(name = "feedback_text", nullable = false)
     private String feedbackText;
 
-    private float rating;
+    private Float rating;
 
     public Feedback() {}
 
-    public Feedback(String feedbackText, float rating) {
+    public Feedback(String feedbackText, Float rating) {
         this.feedbackText = feedbackText;
         this.rating = rating;
     }
@@ -35,10 +35,10 @@ public class Feedback {
     public void setFeedbackText(String feedbackText) {
         this.feedbackText = feedbackText;
     }
-    public float getRating() {
+    public Float getRating() {
         return rating;
     }
-    public void setRating(float rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
     
