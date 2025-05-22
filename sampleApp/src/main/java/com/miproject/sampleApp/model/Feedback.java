@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 public class Feedback {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feedback_seq")
+    @SequenceGenerator(name="feedback_seq",sequenceName="feedback_sequence", allocationSize=1)
     private Long feedbackId;
 
     @Column(name = "feedback_text", nullable = false)
