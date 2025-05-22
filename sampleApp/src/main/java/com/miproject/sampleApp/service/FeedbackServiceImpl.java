@@ -42,6 +42,19 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    public Feedback patchFeedback(Long feedbackId, Feedback partialFeedback) {
+        Feedback existingFeedback = feedbackRepository.findById(feedbackId).orElseThrow(()-> new RuntimeException("No feedback found with id:"+feedbackId));
+        
+        if(partialFeedback.getFeedbackText() != null)
+        existingFeedback.setFeedbackText(partialFeedback.getFeedbackText());
+
+        if(partialFeedback.getRating() != null)
+        existingFeedback.setRating(partialFeedback.getRating());
+
+        return feedbackRepository.save(existingFeedback);
+    }
+
+    @Override
     public void deleteFeedback(Long feedbackId) {
         feedbackRepository.deleteById(feedbackId);
     }

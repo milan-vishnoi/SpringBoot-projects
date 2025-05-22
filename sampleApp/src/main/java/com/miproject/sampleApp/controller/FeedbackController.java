@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,9 +44,15 @@ public class FeedbackController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Feedback> updateFeedback(@PathVariable id, @RequestBody updatedFeedback)
+    public ResponseEntity<Feedback> updateFeedback(@PathVariable Long id, @RequestBody Feedback updatedFeedback)
     {
-        return ResponseEntity.ok(feedbackService.updatedFeedback(id,updatedFeedback));
+        return ResponseEntity.ok(feedbackService.updateFeedback(id,updatedFeedback));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Feedback> updatePartialFeedback(@PathVariable Long id, @RequestBody Feedback partialFeedback)
+    {
+        return ResponseEntity.ok(feedbackService.patchFeedback(id,partialFeedback));
     }
 
 
