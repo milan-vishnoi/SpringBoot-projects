@@ -28,7 +28,17 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback getFeedbackById(Long feedbackId) {
-        return feedbackRepository.findById(feedbackId).orElse(null);
+        return feedbackRepository.findById(feedbackId).orElseThrow(()-> new RuntimeException("No feedback found with id:"+feedbackId));
+    }
+
+    @Override
+    public Feedback updateFeedback(Long feedbackId, Feedback updatedFeedback) {
+        Feedback existingFeedback = feedbackRepository.findById(feedbackId).orElseThrow(()-> new RuntimeException("No feedback found with id:"+feedbackId));
+
+        existingFeedback.setFeedbackText(updatedFeedback.getFeedbackText());
+        existingFeedback.setRating(updatedFeedback.getRating());
+
+        return feedbackRepository.save(existingFeedback);
     }
 
     @Override
