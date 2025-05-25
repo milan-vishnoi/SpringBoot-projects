@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.miproject.sampleApp.dto.FeedbackDTO;
+import com.miproject.sampleApp.mapper.FeedbackMapper;
 import com.miproject.sampleApp.model.Feedback;
 import com.miproject.sampleApp.service.FeedbackService;
 
@@ -29,30 +31,32 @@ public class FeedbackController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Feedback>> getAllFeedbacks() {
-        return ResponseEntity.ok(feedbackService.getAllFeedbacks());
+    public ResponseEntity<List<FeedbackDTO>> getAllFeedbacks() {
+        List<FeedbackDTO> feedbackDTOList = feedbackService.getAllFeedbacks().stream().map(FeedbackMapper::toDTO).toList();
+        return ResponseEntity.ok(feedbackDTOList);
     }
 
     @PostMapping
-    public ResponseEntity<Feedback> saveFeedback(@RequestBody Feedback feedback) {
-          return new ResponseEntity<>(feedbackService.saveFeedback(feedback),HttpStatus.CREATED);
+    public ResponseEntity<FeedbackDTO> saveFeedback(@RequestBody FeedbackDTO feedback) {
+          Feedback savedFeedback = feedbackService.saveFeedback(FeedbackMapper.toEntity(feedback));
+          return new ResponseEntity<>(FeedbackMapper.toDTO(savedFeedback),HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Feedback> getFeedbackById(@PathVariable Long id) {
-        return new ResponseEntity<>(feedbackService.getFeedbackById(id),HttpStatus.OK);
+    public ResponseEntity<FeedbackDTO> getFeedbackById(@PathVariable Long id) {
+        return new ResponseEntity<>(FeedbackMapper.toDTO(feedbackService.getFeedbackById(id)),HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Feedback> updateFeedback(@PathVariable Long id, @RequestBody Feedback updatedFeedback)
+    public ResponseEntity<FeedbackDTO> updateFeedback(@PathVariable Long id, @RequestBody Feedback updatedFeedback)
     {
-        return ResponseEntity.ok(feedbackService.updateFeedback(id,updatedFeedback));
+        return ResponseEntity.ok(FeedbackMapper.toDTO(feedbackService.updateFeedback(id,updatedFeedback)));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Feedback> updatePartialFeedback(@PathVariable Long id, @RequestBody Feedback partialFeedback)
+    public ResponseEntity<FeedbackDTO> updatePartialFeedback(@PathVariable Long id, @RequestBody Feedback partialFeedback)
     {
-        return ResponseEntity.ok(feedbackService.patchFeedback(id,partialFeedback));
+        return ResponseEntity.ok(FeedbackMapper.toDTO(feedbackService.patchFeedback(id,partialFeedback)));
     }
 
 
