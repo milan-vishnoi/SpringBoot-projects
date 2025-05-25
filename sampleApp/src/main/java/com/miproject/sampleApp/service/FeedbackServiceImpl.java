@@ -3,6 +3,7 @@ package com.miproject.sampleApp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.miproject.sampleApp.repository.FeedbackRepository;
+import com.miproject.sampleApp.exception.FeedbackNotFoundException;
 import com.miproject.sampleApp.model.Feedback;
 import java.util.List;
 
@@ -28,12 +29,12 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback getFeedbackById(Long feedbackId) {
-        return feedbackRepository.findById(feedbackId).orElseThrow(()-> new RuntimeException("No feedback found with id:"+feedbackId));
+        return feedbackRepository.findById(feedbackId).orElseThrow(()-> new FeedbackNotFoundException(feedbackId));
     }
 
     @Override
     public Feedback updateFeedback(Long feedbackId, Feedback updatedFeedback) {
-        Feedback existingFeedback = feedbackRepository.findById(feedbackId).orElseThrow(()-> new RuntimeException("No feedback found with id:"+feedbackId));
+        Feedback existingFeedback = feedbackRepository.findById(feedbackId).orElseThrow(()-> new FeedbackNotFoundException(feedbackId));
 
         existingFeedback.setFeedbackText(updatedFeedback.getFeedbackText());
         existingFeedback.setRating(updatedFeedback.getRating());
@@ -43,7 +44,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback patchFeedback(Long feedbackId, Feedback partialFeedback) {
-        Feedback existingFeedback = feedbackRepository.findById(feedbackId).orElseThrow(()-> new RuntimeException("No feedback found with id:"+feedbackId));
+        Feedback existingFeedback = feedbackRepository.findById(feedbackId).orElseThrow(()-> new FeedbackNotFoundException(feedbackId));
         
         if(partialFeedback.getFeedbackText() != null)
         existingFeedback.setFeedbackText(partialFeedback.getFeedbackText());
