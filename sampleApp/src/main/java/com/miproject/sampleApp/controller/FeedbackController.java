@@ -20,6 +20,8 @@ import com.miproject.sampleApp.mapper.FeedbackMapper;
 import com.miproject.sampleApp.model.Feedback;
 import com.miproject.sampleApp.service.FeedbackService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/feedback")
 public class FeedbackController {
@@ -37,7 +39,7 @@ public class FeedbackController {
     }
 
     @PostMapping
-    public ResponseEntity<FeedbackDTO> saveFeedback(@RequestBody FeedbackDTO feedback) {
+    public ResponseEntity<FeedbackDTO> saveFeedback(@Valid @RequestBody FeedbackDTO feedback) {
           Feedback savedFeedback = feedbackService.saveFeedback(FeedbackMapper.toEntity(feedback));
           return new ResponseEntity<>(FeedbackMapper.toDTO(savedFeedback),HttpStatus.CREATED);
     }
@@ -48,15 +50,15 @@ public class FeedbackController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FeedbackDTO> updateFeedback(@PathVariable Long id, @RequestBody Feedback updatedFeedback)
+    public ResponseEntity<FeedbackDTO> updateFeedback(@PathVariable Long id, @Valid @RequestBody FeedbackDTO updatedFeedback)
     {
-        return ResponseEntity.ok(FeedbackMapper.toDTO(feedbackService.updateFeedback(id,updatedFeedback)));
+        return ResponseEntity.ok(FeedbackMapper.toDTO(feedbackService.updateFeedback(id,FeedbackMapper.toEntity(updatedFeedback))));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<FeedbackDTO> updatePartialFeedback(@PathVariable Long id, @RequestBody Feedback partialFeedback)
+    public ResponseEntity<FeedbackDTO> updatePartialFeedback(@PathVariable Long id, @RequestBody FeedbackDTO partialFeedback)
     {
-        return ResponseEntity.ok(FeedbackMapper.toDTO(feedbackService.patchFeedback(id,partialFeedback)));
+        return ResponseEntity.ok(FeedbackMapper.toDTO(feedbackService.patchFeedback(id,FeedbackMapper.toEntity(partialFeedback))));
     }
 
 
